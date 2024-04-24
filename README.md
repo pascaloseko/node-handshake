@@ -40,4 +40,33 @@ The Go code serves as the client, and the Bitcoin node implementation serves as 
     ```
     make server
     ```
+- Run and test Go client
+    ```
+    go run main.go
+    ```
 
+- The output should be
+    ```
+    2024/04/24 14:27:32 Client Listening...
+    2024/04/24 14:27:32 Write to Server PING
+    2024/04/24 14:27:32 Response from Node Server
+    ^�<�PkF�һ�%����������~"�Hy��:B�        �R8��X�Pl>h�z�  }W�
+                                                            ��VK�J��
+                                                                    Xz;�0S9�~[i���S8>hXJ�3+��6
+
+    �0o���˥OOa����hn�'
+    �ּ�G?9��ꠝ��S�0\;�����`�����4#� ����"
+                �8��!#�CB���!�j�-06그aY�p]J'ע)���HW���1O�]�$d���r�J]1��#Q/�f��R���^���2$Es.'ьjb���ʡ[s
+                                                                                                        }���#ƀc$`ߊvK��i=v&���"��������RN�IX��Ŕ�Z��
+                                                                                                                                                k�GL���E���%n�,Y����R���vkI� _>{2\K��
+                    ��О��ї�����)��E�b�)L�٪D
+                                        {�3�jTk)�����NEja��E��4rt%
+    �!Mܦ��H+6O#��eu�ǔ�j̺�zbz�uSNmzU�} ;���SEC~lf���<"w��ⴢ��_L#�����;
+                                            v�:��֚�ot����V�EJ�J8�>�g�
+                                                                    @��L�g��6�o$!��;#�*�M�t���o�nJ��� &�}X�mI\��������j��WW�a3�
+                                                                                                                                ���e��}���7ʷӒ>C�=�u$�Mr_�!V�
+    M��(~����N!(��בE�&�-����!v��6�R�dB��7b��1E~sU���u<Co]g�f��,2謡Co.�-��=��]��+�
+    v��-ql�D�EG}{�K���I��9�[7�mD&6Tg��7�%��VN���z�����`ո���+�flS�C�����=�6 �+��a��
+    1�w޹q��)�ţfXW�x�Q�1��Vh ��h\
+    ��dK��"���QV�����k���hk{.>����O��]���V:
+    ```
