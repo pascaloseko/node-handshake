@@ -1,4 +1,4 @@
 .PHONY: server client
 
 server:
-	bitcoin-27.0/bin/bitcoind
+	docker compose up -d

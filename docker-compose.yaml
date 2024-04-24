@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  bitcoin-node:
+    build:
+      context: ./bitcoin-27.0
+      dockerfile: Dockerfile
+    network_mode: "host"
