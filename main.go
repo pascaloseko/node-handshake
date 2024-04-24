@@ -44,7 +44,7 @@ func Handshake(node BitCoinNode) error {
 		return err
 	}
 
-	log.Println("Reply from Node Server\n", string(reply))
+	log.Println("Response from Node Server\n", string(reply))
 	conn.Close()
 	return err
 }
