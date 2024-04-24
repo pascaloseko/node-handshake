@@ -36,4 +36,8 @@ The Go code serves as the client, and the Bitcoin node implementation serves as 
     - Once the unit tests pass, conduct integration testing by establishing a handshake connection with the running Bitcoin Core server. Verify that the handshake completes successfully and that the client can communicate with the node.
 
 ## How to run it locally
-- TODO
+- Run Bitcoin Node Server
+    ```
+    make server
+    ```
+
