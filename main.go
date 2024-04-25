@@ -1,68 +1,69 @@
 package main
 
 import (
-	"fmt"
+	"encoding/binary"
+	"errors"
 	"log"
 	"net"
+
+	"github.com/pascaloseko/node-handshake/btc"
 )
 
 const (
-	PORT       = "8333"
-	IP         = "127.0.0.1"
-	ClientPort = ":8000"
+	SERVER_PORT      = 18445
+	CLIENT_PORT      = ":8000"
+	PROTOCOL_VERSION = 60002
 )
 
-// BitCoinNode contains IP and port of the
-type BitCoinNode struct {
-	IP   string
-	Port string
-}
-
 // Handshake performs a network handshake with a Bitcoin node
-func Handshake(node BitCoinNode) error {
-	strPing := "PING"
-	connString := fmt.Sprintf("%s:%s", node.IP, node.Port)
-	tcpAddr, err := net.ResolveTCPAddr("tcp", connString)
+func Handshake() error {
+	// Connect to the Bitcoin node
+	address := &net.TCPAddr{
+		IP:   btc.TCPAddress,
+		Port: SERVER_PORT,
+	}
+
+	// Connect to the address
+	conn, err := net.DialTCP("tcp", nil, address)
+	if err != nil {
+		log.Println("Error connecting to address:", err)
+		return err
+	}
+	defer conn.Close()
+
+	// Create and send the version message
+	versionMsg := btc.NewVersionMessage(PROTOCOL_VERSION, net.TCPAddr{IP: btc.TCPAddress, Port: SERVER_PORT})
+	payload, err := versionMsg.ToRawMessage()
 	if err != nil {
 		return err
 	}
-	conn, err := net.DialTCP("tcp", nil, tcpAddr)
-	if err != nil {
+	versCheck := versionMsg.CalculateSHA256()
+	checksum := binary.BigEndian.Uint32(versCheck[:4])
+	btcMessage := btc.NewBtcMessage(btc.Regtest.MagicValue(), versionMsg.Command(), checksum, payload)
+
+	if _, err := conn.Write(btcMessage.ToBytes()); err != nil {
 		return err
 	}
 
-	_, err = conn.Write([]byte(strPing))
-	if err != nil {
-		return err
-	}
-
-	log.Println("Write to Server", strPing)
+	log.Println("Waiting for server response...")
 	reply := make([]byte, 1024)
-
 	_, err = conn.Read(reply)
 	if err != nil {
+		log.Println("Error reading from connection:", err)
 		return err
 	}
+	// Check if the received command matches the expected version command
+	if btcMessage.Command != versionMsg.Command() {
+		log.Println("Received unexpected command:", btcMessage.Command)
+		return errors.New("wrong command")
+	}
 
-	log.Println("Response from Node Server\n", string(reply))
-	conn.Close()
-	return err
+	log.Println("Connection established. Received message:", btcMessage.Command)
+	return nil
 }
 
 func main() {
-	clientListener, err := net.Listen("tcp", ClientPort)
-	if err != nil {
-		panic(err)
-	}
-	defer clientListener.Close()
-
-	log.Println("Client Listening...")
-	// Start the Bitcoin node handshake
-	node := BitCoinNode{
-		IP:   IP,
-		Port: PORT,
-	}
-	if err := Handshake(node); err != nil {
-		panic(err)
+	if err := Handshake(); err != nil {
+		log.Fatal("Error during handshake:", err)
 	}
 }
