@@ -30,8 +30,6 @@ The Go code serves as the client, and the Bitcoin node implementation serves as 
     - Start the Bitcoin Core server on the Linux machine using the bitcoind command. Monitor the server's output to ensure it starts without errors and begins synchronizing with the Bitcoin network.
 4. Implement Client Handshake:
     - Develop the Go code to perform the handshake with the Bitcoin node. Ensure that the code compiles and runs on Linux without dependencies on the Bitcoin Core implementation.
-5. Write Unit Tests.
-    - Write comprehensive unit tests for the client handshake code. Include test cases to cover various scenarios, such as successful handshake, timeout, error handling, and invalid responses.
 6. Test Handshake Connection
     - Once the unit tests pass, conduct integration testing by establishing a handshake connection with the running Bitcoin Core server. Verify that the handshake completes successfully and that the client can communicate with the node.
 
