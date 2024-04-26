@@ -61,7 +61,6 @@ func (vm *VersionMessage) CalculateSHA256() [32]byte {
 
 // ToRawMessage converts the VersionMessage to a raw message.
 func (vm *VersionMessage) ToRawMessage() ([]byte, error) {
-	log.Println(vm)
 	svcBitmask := vm.nodeNetworkBitmask(0x1)
 	addressBytes := vm.netAddrAsBytes(&svcBitmask, &vm.AddrRecv)
 	zeroByte := make([]byte, 0)
