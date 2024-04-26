@@ -2,25 +2,23 @@ package main
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"errors"
 	"log"
 	"net"
-
-	"github.com/pascaloseko/node-handshake/btc"
 )
 
 const (
-	SERVER_PORT      = 18445
-	CLIENT_PORT      = ":8000"
-	PROTOCOL_VERSION = 60002
+	ServerPort      = 18445
+	ProtocolVersion = 60002
 )
 
 // Handshake performs a network handshake with a Bitcoin node
 func Handshake() error {
 	// Connect to the Bitcoin node
 	address := &net.TCPAddr{
-		IP:   btc.TCPAddress,
-		Port: SERVER_PORT,
+		IP:   TCPAddress,
+		Port: ServerPort,
 	}
 
 	// Connect to the address
@@ -32,16 +30,20 @@ func Handshake() error {
 	defer conn.Close()
 
 	// Create and send the version message
-	versionMsg := btc.NewVersionMessage(PROTOCOL_VERSION, net.TCPAddr{IP: btc.TCPAddress, Port: SERVER_PORT})
+	versionMsg := NewVersionMessage(ProtocolVersion, net.TCPAddr{IP: TCPAddress, Port: ServerPort})
 	payload, err := versionMsg.ToRawMessage()
 	if err != nil {
 		return err
 	}
 	versCheck := versionMsg.CalculateSHA256()
 	checksum := binary.BigEndian.Uint32(versCheck[:4])
-	btcMessage := btc.NewBtcMessage(btc.Regtest.MagicValue(), versionMsg.Command(), checksum, payload)
+	btcMessage := NewBtcMessage(Regtest.MagicValue(), versionMsg.Command(), checksum, payload)
+	btcBytes, err := json.Marshal(btcMessage)
+	if err != nil {
+		return err
+	}
 
-	if _, err := conn.Write(btcMessage.ToBytes()); err != nil {
+	if _, err := conn.Write(btcBytes); err != nil {
 		return err
 	}
 

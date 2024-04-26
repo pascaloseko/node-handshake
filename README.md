@@ -36,12 +36,16 @@ The Go code serves as the client, and the Bitcoin node implementation serves as 
 ## How to run it locally
 - Run Bitcoin Node Server
     ```
-    ./bitcoin-27.0/bin/bitcoind -regtest -daemon
+    ./bitcoind -regtest -daemon
     ```
-- Run and test Go client
+- Build the Go client
     ```
-    go run main.go
+    go build -o handshake
+    ```
+- Run the go client
+    ```
+    ./handshake
     ```
 
-## Problems
-- I was not able to correctly send the handshake payload to the server hence the client terminated when running it
+## Problems [UPDATE this is fixed]
+- I was not able to correctly send the handshake payload to the server hence the client terminated when running it 
